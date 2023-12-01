@@ -11,8 +11,8 @@ from passlib.context import CryptContext
 class Reservasi(BaseModel):
     reservasi_id: str
     username: str
-    start_date: str
-    end_date: str
+    date: str
+    time: str
     jenis_ruang_id: str
     jumlah_orang: int
     peralatan_khusus: List[str]
