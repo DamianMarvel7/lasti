@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axiosInstance from "./axiosInstance";
 import {
   Box,
   Heading,
@@ -20,46 +19,17 @@ import {
 } from "@chakra-ui/react";
 import useReservation from "../hooks/useReservation";
 import ReserveForm from "./ReserveForm";
-import { v4 as uuidv4 } from "uuid";
+import useRooms from "../hooks/useRoom";
 
 const Rooms = () => {
-  const [rooms, setRooms] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState("");
+  const { rooms, isLoading, error, formData, setFormData, updateFormData } =
+    useRooms();
   const { data, postData, fetchData } = useReservation();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedJenisRuang, setSelectedJenisRuang] = useState(null);
-
-  useEffect(() => {
-    const fetchRooms = async () => {
-      try {
-        const response = await axiosInstance.get("/jenis-ruang"); // Update the endpoint
-        setRooms(response.data);
-        setIsLoading(false);
-      } catch (error) {
-        setError("Could not fetch rooms");
-        setIsLoading(false);
-      }
-    };
-
-    fetchRooms();
-  }, []);
-
-  const [formData, setFormData] = useState({
-    reservasi_id: uuidv4(),
-    username: localStorage.getItem("username"),
-    start_date: "",
-    end_date: "",
-    jenis_ruang_id: "",
-    jumlah_orang: 0,
-    peralatan_khusus: [],
-    total: 0,
-    metode_pembayaran: "transfer_bank",
-  });
 
   const handleChange = (e, name) => {
-    if (name === "total") {
-      updateFormData("total", e);
+    if (name === "total" || name === "jumlah_orang") {
+      updateFormData(name, e);
     } else {
       if (e && e.target) {
         const { value, type, checked } = e.target;
@@ -77,13 +47,6 @@ const Rooms = () => {
     }
   };
 
-  const updateFormData = (field, value) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [field]: value,
-    }));
-  };
-
   const handleOpen = (jenisRuang) => {
     updateFormData("jenis_ruang_id", jenisRuang);
     onOpen();
@@ -91,7 +54,6 @@ const Rooms = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(e.data, "ASASD");
     const result = await postData(formData);
     console.log(formData, result);
     if (result.success) {
@@ -117,6 +79,8 @@ const Rooms = () => {
       </Box>
     );
   }
+
+  console.log(formData);
   return (
     <Box mt={8}>
       <Heading as="h1" size="xl" textAlign="center" mb={4}></Heading>
@@ -151,7 +115,7 @@ const Rooms = () => {
                     <ModalCloseButton />
                     <ModalBody>
                       <ReserveForm
-                        jenisRuang={selectedJenisRuang}
+                        jenisRuang={formData.jenis_ruang_id}
                         setFormData={setFormData}
                         formData={formData}
                         handleInputChange={handleChange}

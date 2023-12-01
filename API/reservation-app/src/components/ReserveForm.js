@@ -7,6 +7,11 @@ import {
   Stack,
   Checkbox,
   Text,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react";
 import useReservation from "../hooks/useReservation";
@@ -14,7 +19,6 @@ import useReservation from "../hooks/useReservation";
 const ReserveForm = ({
   jenisRuang,
   formData,
-  setFormData,
   handleInputChange,
   handleSubmit,
   isUpdate,
@@ -65,6 +69,35 @@ const ReserveForm = ({
             onChange={(e) => handleInputChange(e, "start_date")}
             isRequired
           />
+        </FormControl>
+
+        <FormControl>
+          <FormLabel>End Date</FormLabel>
+          <Input
+            placeholder="Select Date and Time"
+            size="md"
+            type="datetime-local"
+            name="end_date"
+            value={formData.end_date}
+            onChange={(e) => handleInputChange(e, "end_date")}
+            isRequired
+          />
+        </FormControl>
+
+        <FormControl>
+          <FormLabel>Jumlah Orang</FormLabel>
+          <NumberInput
+            name="jumlah_orang"
+            value={formData.jumlah_orang}
+            min={0}
+            onChange={(value) => handleInputChange(value, "jumlah_orang")}
+          >
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
         </FormControl>
 
         <FormControl>

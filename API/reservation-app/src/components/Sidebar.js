@@ -39,7 +39,8 @@ const Sidebar = () => {
           className="nav-link"
         >
           <Link as={Flex} align="center" fontSize="md" justifyContent="center">
-            <FaDoorOpen size="1.2em" style={{ marginRight: "8px" }} /> Rooms
+            <FaDoorOpen size="1.2em" style={{ marginRight: "8px" }} />{" "}
+            Reservation History
           </Link>
         </NavLink>
         {/* Additional Links */}
