@@ -197,13 +197,18 @@ async def create_reservasi(reservasi: Reservasi, current_user: str = Depends(get
             },
             json=reservasi_dict,
         )
-
+    print(response)
     if response.status_code == 201:
         return reservasi_dict
+    elif response.status_code == 409:
+        raise HTTPException(
+            status_code=response.status_code,
+            detail="Reservation conflict: This reservation already exists.",
+        )
     else:
         raise HTTPException(
             status_code=response.status_code,
-            detail=f'Gagal menambahkan data reservasi. Kode status: {response.status_code}'
+            detail=f'Gagal menambahkan data reservasi. Kode status: {response.status_code}',
         )
 
 @app.delete('/reservasi/{reservasi_id}')

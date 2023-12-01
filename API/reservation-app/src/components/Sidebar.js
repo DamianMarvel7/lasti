@@ -1,8 +1,8 @@
-import React from 'react';
-import { Box, Link, VStack, Text, Flex } from '@chakra-ui/react';
-import { NavLink } from 'react-router-dom';
-import { FaHome, FaDoorOpen } from 'react-icons/fa'; // Import icons
-import './Sidebar.css';
+import React from "react";
+import { Box, Link, VStack, Text, Flex } from "@chakra-ui/react";
+import { NavLink } from "react-router-dom";
+import { FaHome, FaDoorOpen } from "react-icons/fa"; // Import icons
+import "./Sidebar.css";
 
 const Sidebar = () => {
   return (
@@ -23,14 +23,23 @@ const Sidebar = () => {
 
       {/* Navigation Links */}
       <VStack spacing={3} align="stretch">
-        <NavLink to="/home" activeClassName="active" className="nav-link">
+        <NavLink to="/home" activeclassname="active" className="nav-link">
           <Link as={Flex} align="center" fontSize="md" justifyContent="center">
-            <FaHome size="1.2em" style={{ marginRight: '8px' }} /> Home
+            <FaHome size="1.2em" style={{ marginRight: "8px" }} /> Home
           </Link>
         </NavLink>
-        <NavLink to="/rooms" activeClassName="active" className="nav-link">
+        <NavLink to="/rooms" activeclassname="active" className="nav-link">
           <Link as={Flex} align="center" fontSize="md" justifyContent="center">
-            <FaDoorOpen size="1.2em" style={{ marginRight: '8px' }} /> Rooms
+            <FaDoorOpen size="1.2em" style={{ marginRight: "8px" }} /> Rooms
+          </Link>
+        </NavLink>
+        <NavLink
+          to="/reservation"
+          activeclassname="active"
+          className="nav-link"
+        >
+          <Link as={Flex} align="center" fontSize="md" justifyContent="center">
+            <FaDoorOpen size="1.2em" style={{ marginRight: "8px" }} /> Rooms
           </Link>
         </NavLink>
         {/* Additional Links */}

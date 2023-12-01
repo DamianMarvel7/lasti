@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import axiosInstance from './axiosInstance';
+import React, { useState, useEffect } from "react";
+import axiosInstance from "./axiosInstance";
 import {
   Box,
   Heading,
@@ -8,27 +8,98 @@ import {
   ListItem,
   UnorderedList,
   CircularProgress,
-} from '@chakra-ui/react';
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+} from "@chakra-ui/react";
+import useReservation from "../hooks/useReservation";
+import ReserveForm from "./ReserveForm";
+import { v4 as uuidv4 } from "uuid";
 
 const Rooms = () => {
   const [rooms, setRooms] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
+  const { data, postData, fetchData } = useReservation();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedJenisRuang, setSelectedJenisRuang] = useState(null);
 
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        const response = await axiosInstance.get('/jenis-ruang'); // Update the endpoint
+        const response = await axiosInstance.get("/jenis-ruang"); // Update the endpoint
         setRooms(response.data);
         setIsLoading(false);
       } catch (error) {
-        setError('Could not fetch rooms');
+        setError("Could not fetch rooms");
         setIsLoading(false);
       }
     };
 
     fetchRooms();
   }, []);
+
+  const [formData, setFormData] = useState({
+    reservasi_id: uuidv4(),
+    username: localStorage.getItem("username"),
+    start_date: "",
+    end_date: "",
+    jenis_ruang_id: "",
+    jumlah_orang: 0,
+    peralatan_khusus: [],
+    total: 0,
+    metode_pembayaran: "transfer_bank",
+  });
+
+  const handleChange = (e, name) => {
+    if (name === "total") {
+      updateFormData("total", e);
+    } else {
+      if (e && e.target) {
+        const { value, type, checked } = e.target;
+
+        if (type === "checkbox" && name === "peralatan_khusus") {
+          const updatedPeralatanKhusus = checked
+            ? [...formData.peralatan_khusus, value]
+            : formData.peralatan_khusus.filter((id) => id !== value);
+
+          updateFormData(name, updatedPeralatanKhusus);
+        } else {
+          updateFormData(name, value);
+        }
+      }
+    }
+  };
+
+  const updateFormData = (field, value) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [field]: value,
+    }));
+  };
+
+  const handleOpen = (jenisRuang) => {
+    updateFormData("jenis_ruang_id", jenisRuang);
+    onOpen();
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(e.data, "ASASD");
+    const result = await postData(formData);
+    console.log(formData, result);
+    if (result.success) {
+      await fetchData();
+    } else {
+      console.error("Error submitting form:", result.error);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -46,12 +117,9 @@ const Rooms = () => {
       </Box>
     );
   }
-
   return (
     <Box mt={8}>
-      <Heading as="h1" size="xl" textAlign="center" mb={4}>
-        Available Rooms
-      </Heading>
+      <Heading as="h1" size="xl" textAlign="center" mb={4}></Heading>
       {rooms.length > 0 ? (
         <List spacing={4} maxW="lg" mx="auto">
           {rooms.map((room) => (
@@ -63,7 +131,7 @@ const Rooms = () => {
                 boxShadow="md"
                 bg="white"
                 transition="transform 0.2s"
-                _hover={{ transform: 'scale(1.02)' }}
+                _hover={{ transform: "scale(1.02)" }}
               >
                 <Heading as="h2" size="lg">
                   {room.nama}
@@ -76,6 +144,32 @@ const Rooms = () => {
                   ))}
                 </UnorderedList>
                 <Text fontWeight="bold">Price: {room.harga}</Text>
+                <Modal isOpen={isOpen} onClose={onClose}>
+                  <ModalOverlay />
+                  <ModalContent>
+                    <ModalHeader>Reserve</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                      <ReserveForm
+                        jenisRuang={selectedJenisRuang}
+                        setFormData={setFormData}
+                        formData={formData}
+                        handleInputChange={handleChange}
+                        handleSubmit={handleSubmit}
+                        isUpdate={true}
+                        onClose={onClose}
+                      />
+                    </ModalBody>
+
+                    <ModalFooter></ModalFooter>
+                  </ModalContent>
+                </Modal>
+                <Button
+                  colorScheme="blue"
+                  onClick={() => handleOpen(room.jenis_ruang_id)}
+                >
+                  Reserve
+                </Button>
               </Box>
             </ListItem>
           ))}
@@ -88,5 +182,4 @@ const Rooms = () => {
     </Box>
   );
 };
-
 export default Rooms;
