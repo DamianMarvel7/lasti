@@ -12,6 +12,7 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  FormHelperText,
 } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react";
 import useReservation from "../hooks/useReservation";
@@ -24,7 +25,7 @@ const ReserveForm = ({
   isUpdate,
   onClose,
 }) => {
-  const { dataAlat } = useReservation();
+  const { data, dataAlat } = useReservation();
 
   const calculateTotalPrice = (selectedTools) => {
     let totalPrice = 0;
@@ -49,39 +50,75 @@ const ReserveForm = ({
     }
   };
 
+  console.log(data);
+
   const hargaAlat = calculateTotalPrice(formData.peralatan_khusus);
   const hargaRuang = jenisRuang == "54321" ? 150000 : 100000;
 
   useEffect(() => {
     handleInputChange(hargaAlat + hargaRuang, "total");
   }, [hargaRuang, hargaAlat]);
+
+  const renderHourOptions = (inputDate) => {
+    const reservedTimes = getReservedTimesByDate(inputDate);
+    const availableHours = [];
+
+    for (let i = 8; i <= 20; i++) {
+      const hour = `${i}:00:00`;
+      if (!reservedTimes.includes(hour)) {
+        availableHours.push(
+          <option key={i} value={hour}>
+            {hour}
+          </option>
+        );
+      }
+    }
+
+    return availableHours;
+  };
+
+  function getReservedTimesByDate(inputDate) {
+    if (!data) {
+      return [];
+    }
+
+    const reservedTimes = data
+      .filter((reservation) => reservation.date === inputDate)
+      .map((reservation) => reservation.time);
+
+    return reservedTimes;
+  }
+
   return (
     <div>
       <form onSubmit={(e) => handleSubmit(e, isUpdate)}>
         <FormControl>
-          <FormLabel>Start Date</FormLabel>
+          <FormLabel>Date</FormLabel>
           <Input
             placeholder="Select Date and Time"
             size="md"
-            type="datetime-local"
-            name="start_date"
-            value={formData.start_date}
-            onChange={(e) => handleInputChange(e, "start_date")}
+            type="date"
+            name="date"
+            value={formData.date}
+            onChange={(e) => handleInputChange(e, "date")}
             isRequired
           />
         </FormControl>
 
         <FormControl>
-          <FormLabel>End Date</FormLabel>
-          <Input
-            placeholder="Select Date and Time"
-            size="md"
-            type="datetime-local"
-            name="end_date"
-            value={formData.end_date}
-            onChange={(e) => handleInputChange(e, "end_date")}
+          <FormLabel htmlFor="hourSelect">Select Hour:</FormLabel>
+          <Select
+            id="hourSelect"
+            name="time"
+            value={formData.time}
+            onChange={(e) => handleInputChange(e, "time")}
+            placeholder="Select hour"
             isRequired
-          />
+            isDisabled={!formData.date}
+          >
+            {renderHourOptions(formData.date)}
+          </Select>{" "}
+          <FormHelperText>Input the date first</FormHelperText>
         </FormControl>
 
         <FormControl>
@@ -98,19 +135,6 @@ const ReserveForm = ({
               <NumberDecrementStepper />
             </NumberInputStepper>
           </NumberInput>
-        </FormControl>
-
-        <FormControl>
-          <FormLabel>End Date</FormLabel>
-          <Input
-            placeholder="Select Date and Time"
-            size="md"
-            type="datetime-local"
-            name="end_date"
-            value={formData.end_date}
-            onChange={(e) => handleInputChange(e, "end_date")}
-            isRequired
-          />
         </FormControl>
 
         <FormControl>

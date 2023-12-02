@@ -80,7 +80,6 @@ const Rooms = () => {
     );
   }
 
-  console.log(formData);
   return (
     <Box mt={8}>
       <Heading as="h1" size="xl" textAlign="center" mb={4}></Heading>

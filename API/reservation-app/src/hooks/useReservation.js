@@ -10,10 +10,10 @@ const useReservation = () => {
   const [dataAlat, setDataAlat] = useState("temp");
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    fetchData();
-    fetchDataAlat();
-  }, [token, username]);
+  // useEffect(() => {
+  //   fetchData();
+  //   fetchDataAlat();
+  // }, [token, username]);
 
   useEffect(() => {
     fetchData();

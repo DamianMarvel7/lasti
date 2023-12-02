@@ -26,14 +26,16 @@ const useRooms = () => {
   const [formData, setFormData] = useState({
     reservasi_id: uuidv4(),
     username: localStorage.getItem("username"),
-    start_date: "",
-    end_date: "",
+    date: "",
+    time: "",
     jenis_ruang_id: "",
     jumlah_orang: 0,
     peralatan_khusus: [],
     total: 0,
     metode_pembayaran: "transfer_bank",
   });
+
+  console.log(formData);
 
   const updateFormData = (field, value) => {
     setFormData((prevFormData) => ({

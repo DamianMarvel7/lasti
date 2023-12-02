@@ -6,6 +6,8 @@ const Reservation = () => {
   const { data } = useReservation();
   const username = localStorage.getItem("username");
   const filterData = data ? data.filter((d) => d.username === username) : null;
+
+  console.log(data);
   return (
     <div>
       {filterData && (
@@ -15,8 +17,8 @@ const Reservation = () => {
               <Tr>
                 <Th>Reservation ID</Th>
                 <Th>Username</Th>
-                <Th>Start Date</Th>
-                <Th>End Date</Th>
+                <Th>Date</Th>
+                <Th>Time</Th>
                 <Th>Jenis Ruang ID</Th>
                 <Th>Jumlah Orang</Th>
                 <Th>Peralatan Khusus</Th>
@@ -29,8 +31,8 @@ const Reservation = () => {
                 <Tr key={reservation.reservasi_id}>
                   <Td>{reservation.reservasi_id}</Td>
                   <Td>{reservation.username}</Td>
-                  <Td>{reservation.start_date}</Td>
-                  <Td>{reservation.end_date}</Td>
+                  <Td>{reservation.date}</Td>
+                  <Td>{reservation.time}</Td>
                   <Td>{reservation.jenis_ruang_id}</Td>
                   <Td>{reservation.jumlah_orang}</Td>
                   <Td>{reservation.peralatan_khusus.join(", ")}</Td>
