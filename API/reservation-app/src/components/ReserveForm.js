@@ -50,7 +50,6 @@ const ReserveForm = ({
     }
   };
 
-  console.log(data);
 
   const hargaAlat = calculateTotalPrice(formData.peralatan_khusus);
   const hargaRuang = jenisRuang == "54321" ? 150000 : 100000;
@@ -81,13 +80,18 @@ const ReserveForm = ({
     if (!data) {
       return [];
     }
-
     const reservedTimes = data
-      .filter((reservation) => reservation.date === inputDate)
+      .filter((reservation) => reservation.date === inputDate && reservation.jenis_ruang_id==formData.jenis_ruang_id)
       .map((reservation) => reservation.time);
-
     return reservedTimes;
   }
+
+  const getTomorrowDate = () => {
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return tomorrow.toISOString().split('T')[0];
+  };
 
   return (
     <div>
@@ -101,6 +105,7 @@ const ReserveForm = ({
             name="date"
             value={formData.date}
             onChange={(e) => handleInputChange(e, "date")}
+            min={getTomorrowDate()}
             isRequired
           />
         </FormControl>

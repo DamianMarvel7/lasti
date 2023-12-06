@@ -35,7 +35,6 @@ const useRooms = () => {
     metode_pembayaran: "transfer_bank",
   });
 
-  console.log(formData);
 
   const updateFormData = (field, value) => {
     setFormData((prevFormData) => ({

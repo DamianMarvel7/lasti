@@ -7,7 +7,6 @@ const Reservation = () => {
   const username = localStorage.getItem("username");
   const filterData = data ? data.filter((d) => d.username === username) : null;
 
-  console.log(data);
   return (
     <div>
       {filterData && (

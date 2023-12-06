@@ -55,8 +55,8 @@ const Rooms = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const result = await postData(formData);
-    console.log(formData, result);
     if (result.success) {
+      onClose(); 
       await fetchData();
     } else {
       console.error("Error submitting form:", result.error);
