@@ -10,10 +10,6 @@ const useReservation = () => {
   const [dataAlat, setDataAlat] = useState("temp");
   const [error, setError] = useState(null);
 
-  // useEffect(() => {
-  //   fetchData();
-  //   fetchDataAlat();
-  // }, [token, username]);
 
   useEffect(() => {
     fetchData();
@@ -59,41 +55,7 @@ const useReservation = () => {
     }
   };
 
-  // const updateData = async (url, formData) => {
-  //   const headers = {
-  //     Authorization: `Bearer ${token}`,
-  //     "Content-Type": "application/json",
-  //   };
-
-  //   console.log(formData);
-  //   formData["Customer_ID"] = data["Customer_ID"];
-  //   console.log(formData);
-
-  //   try {
-  //     const response = await axios.put(url + username, formData, { headers });
-  //     console.log("Data updated successfully:", response.data);
-  //     return { success: true, data: response.data };
-  //   } catch (error) {
-  //     console.error("Error updating data:", error);
-  //     return { success: false, error };
-  //   }
-  // };
-
-  // const deleteData = async (url) => {
-  //   const headers = {
-  //     Authorization: `Bearer ${token}`,
-  //     "Content-Type": "application/json",
-  //   };
-  //   try {
-  //     const response = await axios.delete(url, { headers });
-  //     setData("temp");
-  //     console.log("Data deleted successfully:", response.data);
-  //     return { success: true, data: response.data };
-  //   } catch (error) {
-  //     console.error("Error deleting data:", error);
-  //     return { success: false, error };
-  //   }
-  // };
+ 
 
   return {
     data,
@@ -103,8 +65,7 @@ const useReservation = () => {
     username,
     postData,
     fetchData,
-    // deleteData,
-    // updateData,
+
   };
 };
 

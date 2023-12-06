@@ -20,6 +20,8 @@ import {
 import useReservation from "../hooks/useReservation";
 import ReserveForm from "./ReserveForm";
 import useRooms from "../hooks/useRoom";
+import { v4 as uuidv4 } from "uuid";
+
 
 const Rooms = () => {
   const { rooms, isLoading, error, formData, setFormData, updateFormData } =
@@ -58,6 +60,18 @@ const Rooms = () => {
     if (result.success) {
       onClose(); 
       await fetchData();
+
+      setFormData({
+        reservasi_id: uuidv4(),
+        username: localStorage.getItem("username"),
+        date: "",
+        time: "",
+        jenis_ruang_id: "",
+        jumlah_orang: 0,
+        peralatan_khusus: [],
+        total: 0,
+        metode_pembayaran: "transfer_bank",
+      });
     } else {
       console.error("Error submitting form:", result.error);
     }

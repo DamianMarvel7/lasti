@@ -54,16 +54,15 @@ const ReserveForm = ({
   const hargaAlat = calculateTotalPrice(formData.peralatan_khusus);
   const hargaRuang = jenisRuang == "54321" ? 150000 : 100000;
 
-  useEffect(() => {
-    handleInputChange(hargaAlat + hargaRuang, "total");
-  }, [hargaRuang, hargaAlat]);
+  // useEffect(() => {
+  //   handleInputChange(hargaAlat + hargaRuang, "total");
+  // }, [hargaRuang, hargaAlat]);
 
   const renderHourOptions = (inputDate) => {
     const reservedTimes = getReservedTimesByDate(inputDate);
     const availableHours = [];
-
     for (let i = 8; i <= 20; i++) {
-      const hour = `${i}:00:00`;
+      const hour = i < 10 ? `0${i}:00:00` : `${i}:00:00`;
       if (!reservedTimes.includes(hour)) {
         availableHours.push(
           <option key={i} value={hour}>
@@ -72,7 +71,6 @@ const ReserveForm = ({
         );
       }
     }
-
     return availableHours;
   };
 
