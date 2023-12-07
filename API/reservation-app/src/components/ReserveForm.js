@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react";
 import useReservation from "../hooks/useReservation";
+import axiosInstance from "../components/axiosInstance";
 
 const ReserveForm = ({
   jenisRuang,
@@ -27,6 +28,21 @@ const ReserveForm = ({
 }) => {
   const { data, dataAlat } = useReservation();
 
+  const [room, setRooms] = useState([]);
+
+  useEffect(() => {
+    const fetchRooms = async () => {
+      try {
+        const response = await axiosInstance.get(`/jenis-ruang/${jenisRuang}`);
+        setRooms(response.data);
+      } catch (error) {
+        console.log(error)
+      }
+    };
+
+    fetchRooms();
+  }, []);
+  
   const calculateTotalPrice = (selectedTools) => {
     let totalPrice = 0;
     if (selectedTools) {
@@ -123,13 +139,13 @@ const ReserveForm = ({
           </Select>{" "}
           <FormHelperText>Input the date first</FormHelperText>
         </FormControl>
-
         <FormControl>
           <FormLabel>Jumlah Orang</FormLabel>
           <NumberInput
             name="jumlah_orang"
             value={formData.jumlah_orang}
             min={0}
+            max={room.kapasitas}
             onChange={(value) => handleInputChange(value, "jumlah_orang")}
           >
             <NumberInputField />
