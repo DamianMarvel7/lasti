@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import axios from "axios"; // Make sure to import axios
 import axiosInstance from "../components/axiosInstance";
 
 const useReservation = () => {

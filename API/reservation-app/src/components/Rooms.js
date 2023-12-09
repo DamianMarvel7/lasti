@@ -25,7 +25,7 @@ import { v4 as uuidv4 } from "uuid";
 const Rooms = () => {
   const { rooms, isLoading, error, formData, setFormData, updateFormData } =
     useRooms();
-  const { data, postData, fetchData } = useReservation();
+  const {  postData, fetchData } = useReservation();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleChange = (e, name) => {

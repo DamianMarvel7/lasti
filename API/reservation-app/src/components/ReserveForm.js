@@ -41,7 +41,7 @@ const ReserveForm = ({
     };
 
     fetchRooms();
-  }, []);
+  }, [jenisRuang]);
   
   const calculateTotalPrice = (selectedTools) => {
     let totalPrice = 0;
