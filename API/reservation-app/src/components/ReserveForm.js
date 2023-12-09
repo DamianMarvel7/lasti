@@ -70,9 +70,9 @@ const ReserveForm = ({
   const hargaAlat = calculateTotalPrice(formData.peralatan_khusus);
   const hargaRuang = jenisRuang === "54321" ? 150000 : 100000;
 
-  // useEffect(() => {
-  //   handleInputChange(hargaAlat + hargaRuang, "total");
-  // }, [hargaRuang, hargaAlat]);
+  useEffect(() => {
+    handleInputChange(hargaAlat + hargaRuang, "total");
+  }, [hargaRuang, hargaAlat]);
 
   const renderHourOptions = (inputDate) => {
     const reservedTimes = getReservedTimesByDate(inputDate);
