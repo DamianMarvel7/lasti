@@ -44,7 +44,6 @@ const Login = () => {
       );
     }
   };
-  console.log(FormData);
   return (
     <Box maxW="md" mx="auto" mt={8} p={4} borderWidth="1px" borderRadius="md">
       <Heading as="h1" size="xl" mb={4}>

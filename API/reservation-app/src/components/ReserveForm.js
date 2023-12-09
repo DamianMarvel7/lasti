@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import {
   FormControl,
   FormLabel,
@@ -52,7 +51,7 @@ const ReserveForm = ({
 
 
   const hargaAlat = calculateTotalPrice(formData.peralatan_khusus);
-  const hargaRuang = jenisRuang == "54321" ? 150000 : 100000;
+  const hargaRuang = jenisRuang === "54321" ? 150000 : 100000;
 
   // useEffect(() => {
   //   handleInputChange(hargaAlat + hargaRuang, "total");
@@ -79,7 +78,7 @@ const ReserveForm = ({
       return [];
     }
     const reservedTimes = data
-      .filter((reservation) => reservation.date === inputDate && reservation.jenis_ruang_id==formData.jenis_ruang_id)
+      .filter((reservation) => reservation.date === inputDate && reservation.jenis_ruang_id===formData.jenis_ruang_id)
       .map((reservation) => reservation.time);
     return reservedTimes;
   }
