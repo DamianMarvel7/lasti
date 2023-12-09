@@ -72,7 +72,7 @@ const ReserveForm = ({
 
   useEffect(() => {
     handleInputChange(hargaAlat + hargaRuang, "total");
-  }, [hargaRuang, hargaAlat]);
+  }, [hargaRuang, hargaAlat,handleInputChange]);
 
   const renderHourOptions = (inputDate) => {
     const reservedTimes = getReservedTimesByDate(inputDate);
